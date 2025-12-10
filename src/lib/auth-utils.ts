@@ -10,7 +10,7 @@ export const authRoutes = [
   "/login",
   "/register",
   "/forgot-password",
-  "/reset-password",
+  "/change-password",
 ];
 
 // Common protected routes

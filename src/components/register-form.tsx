@@ -1,12 +1,49 @@
+// components/RegisterForm.tsx (Updated with minimal UI)
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { use, useActionState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
-import { Input } from "./ui/input";
+import { useActionState, useEffect } from "react";
 import { registerPatient } from "@/services/auth/registerWorker";
 import { toast } from "sonner";
+import Link from "next/link"; // Use Next.js Link for better navigation
+
+// Helper component for the styled input/label group
+const InputField = ({
+  id,
+  label,
+  type = "text",
+  placeholder,
+  error,
+}: {
+  id: string;
+  label: string;
+  type?: string;
+  placeholder?: string;
+  error: string | null;
+}) => (
+  <div className="flex flex-col space-y-1">
+    <label htmlFor={id} className="text-sm font-medium text-gray-700">
+      {label}
+    </label>
+    <input
+      id={id}
+      name={id}
+      type={type}
+      placeholder={placeholder}
+      required
+      className={`w-full border ${
+        error ? "border-red-500 ring-red-500" : "border-gray-300 focus:border-black focus:ring-black"
+      } rounded-lg px-3 py-2 outline-none text-sm transition-all duration-200 focus:ring-2`}
+    />
+    {error && (
+      <p className="text-red-600 text-xs mt-1">
+        {error}
+      </p>
+    )}
+  </div>
+);
+
 
 const RegisterForm = () => {
   const [state, formAction, isPending] = useActionState(registerPatient, null);
@@ -21,109 +58,80 @@ const RegisterForm = () => {
   useEffect(() => {
     if (state && !state?.success && state.message) {
       toast.error(state.message);
-    }}, [state]);
+    }
+  }, [state]);
 
   return (
-    <form action={formAction}>
-      <FieldGroup>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form action={formAction} className="space-y-6">
+      
+      {/* Input Fields Grid (2 columns on medium screens) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          {/* Full Name */}
-          <Field>
-            <FieldLabel htmlFor="name">Full Name</FieldLabel>
-            <Input id="name" name="name" type="text" placeholder="John Doe" />
-            {getFieldError("name") && (
-              <FieldDescription className="text-red-600">
-                {getFieldError("name")}
-              </FieldDescription>
-            )}
-          </Field>
+        <InputField
+          id="name"
+          label="Full Name"
+          placeholder="John Doe"
+          error={getFieldError("name")}
+        />
 
-          {/* NID Number */}
-          <Field>
-            <FieldLabel htmlFor="nidNumber">NID Number</FieldLabel>
-            <Input
-              id="nidNumber"
-              name="nidNumber"
-              type="text"
-              placeholder="5656713216"
-            />
-            {getFieldError("nidNumber") && (
-              <FieldDescription className="text-red-600">
-                {getFieldError("nidNumber")}
-              </FieldDescription>
-            )}
-          </Field>
+        <InputField
+          id="nidNumber"
+          label="NID Number"
+          placeholder="5656713216"
+          error={getFieldError("nidNumber")}
+        />
 
-          {/* Email */}
-          <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="m@example.com"
-            />
-            {getFieldError("email") && (
-              <FieldDescription className="text-red-600">
-                {getFieldError("email")}
-              </FieldDescription>
-            )}
-          </Field>
+        <InputField
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="m@example.com"
+          error={getFieldError("email")}
+        />
 
-          {/* Contact Number */}
-          <Field>
-            <FieldLabel htmlFor="contactNumber">Contact Number</FieldLabel>
-            <Input
-              id="contactNumber"
-              name="contactNumber"
-              type="text"
-              placeholder="017xxxxxxxx"
-            />
-            {getFieldError("contactNumber") && (
-              <FieldDescription className="text-red-600">
-                {getFieldError("contactNumber")}
-              </FieldDescription>
-            )}
-          </Field>
+        <InputField
+          id="contactNumber"
+          label="Contact Number"
+          placeholder="017xxxxxxxx"
+          error={getFieldError("contactNumber")}
+        />
 
-          {/* Password */}
-          <Field>
-            <FieldLabel htmlFor="password">Password</FieldLabel>
-            <Input id="password" name="password" type="password" />
-            {getFieldError("password") && (
-              <FieldDescription className="text-red-600">
-                {getFieldError("password")}
-              </FieldDescription>
-            )}
-          </Field>
+        <InputField
+          id="password"
+          label="Password"
+          type="password"
+          placeholder="******"
+          error={getFieldError("password")}
+        />
 
-          {/* Confirm Password */}
-          <Field>
-            <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
-            <Input id="confirmPassword" name="confirmPassword" type="password" />
-            {getFieldError("confirmPassword") && (
-              <FieldDescription className="text-red-600">
-                {getFieldError("confirmPassword")}
-              </FieldDescription>
-            )}
-          </Field>
-        </div>
+        <InputField
+          id="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          placeholder="******"
+          error={getFieldError("confirmPassword")}
+        />
+        
+      </div>
 
-        <FieldGroup className="mt-4">
-          <Field>
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Creating Account..." : "Create Account"}
-            </Button>
-            <FieldDescription className="px-6 text-center">
-              Already have an account?{" "}
-              <a href="/login" className="text-blue-600 hover:underline">
-                Sign in
-              </a>
-            </FieldDescription>
-          </Field>
-        </FieldGroup>
-      </FieldGroup>
+      {/* Submit Button and Footer Link */}
+      <div className="space-y-4 pt-2">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="w-full bg-black text-white py-3 rounded-lg font-medium text-base hover:bg-neutral-800 transition-all duration-200 disabled:bg-neutral-400 disabled:cursor-not-allowed shadow-md"
+        >
+          {isPending ? "Creating Account..." : "Create Account"}
+        </button>
+
+        <p className="text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link href="/login" className="text-black font-medium hover:underline transition-colors">
+            Sign in
+          </Link>
+        </p>
+      </div>
+      
     </form>
   );
 };
