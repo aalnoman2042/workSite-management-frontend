@@ -3,7 +3,12 @@
 // import Steps from "@/components/modules/Home/Steps";
 // import Testimonials from "@/components/modules/Home/Testimonials";
 // import TopRatedDoctors from "@/components/modules/Home/TopRatedDoctors";
+import BenefitsSection from "@/components/module/Home/benefits";
+import FAQSection from "@/components/module/Home/FAQ";
 import { WorksiteHero } from "@/components/module/Home/Hero";
+import HowItWorks from "@/components/module/Home/howItWorks";
+import KeyFeatures from "@/components/module/Home/keyFeature";
+import WhyChooseUs from "@/components/module/Home/whyChooseUs";
 import Head from "next/head";
 
 export default function Home() {
@@ -20,8 +25,11 @@ export default function Home() {
       </Head>
       <main>
         <WorksiteHero />
-        {/* <Specialities /> */}
-        {/* <TopRatedDoctors /> */}
+       <HowItWorks />
+    <WhyChooseUs />
+    <KeyFeatures />
+    <BenefitsSection />
+    <FAQSection />
         {/* <Steps /> */}
         {/* <Testimonials /> */}
       </main>
