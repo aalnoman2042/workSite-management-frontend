@@ -4,7 +4,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { registerPatient } from "@/services/auth/registerWorker";
+import { registerWorker } from "@/services/auth/registerWorker";
 import { toast } from "sonner";
 import Link from "next/link"; // Use Next.js Link for better navigation
 
@@ -46,7 +46,7 @@ const InputField = ({
 
 
 const RegisterForm = () => {
-  const [state, formAction, isPending] = useActionState(registerPatient, null);
+  const [state, formAction, isPending] = useActionState(registerWorker, null);
 
   const getFieldError = (fieldName: string) => {
     if (state?.errors) {
@@ -94,6 +94,12 @@ const RegisterForm = () => {
           label="Contact Number"
           placeholder="017xxxxxxxx"
           error={getFieldError("contactNumber")}
+        />
+        <InputField
+          id="profilePhoto"
+          label="Profile Photo URL"
+          placeholder="https://example.com/photo.jpg"
+          error={getFieldError("profilePhoto")}
         />
 
         <InputField
