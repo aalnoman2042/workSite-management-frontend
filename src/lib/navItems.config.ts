@@ -63,6 +63,32 @@ export const siteEngineerNavItems: NavSection[] = [
         ],
     }
 ]
+export const chiefEngineerNavItems: NavSection[] = [
+    {
+        title: "Patient Management",
+        items: [
+            {
+                title: "create new site",
+                href: "/chief-engineer/dashboard/create-site",
+                icon: "Calendar", // ✅ String
+                // badge: "3",
+                roles: ["CHIEF_ENGINEER"],
+            },
+            {
+                title: "All Sites",
+                href: "/chief-engineer/dashboard/all-sites",
+                icon: "Clock", // ✅ String
+                roles: ["CHIEF_ENGINEER"],
+            },
+            {
+                title: "Workers",
+                href: "/chief-engineer/dashboard/workers",
+                icon: "FileText", // ✅ String
+                roles: ["CHIEF_ENGINEER"],
+            },
+        ],
+    }
+]
 
 export const workerNavItems: NavSection[] = [
     {
@@ -104,34 +130,34 @@ export const workerNavItems: NavSection[] = [
 
 export const adminNavItems: NavSection[] = [
     {
-        title: "User Management",
+        title: "User creation",
         items: [
             {
-                title: "Admins",
-                href: "/admin/dashboard/admins-management",
+                title: " Create Workers",
+                href: "/admin/dashboard/create-workers",
                 icon: "Shield", // ✅ String
                 roles: ["ADMIN"],
             },
             {
-                title: "Site Engineers",
+                title: " Create Site Engineers",
                 href: "/admin/dashboard/create-site-engineer",
                 icon: "Stethoscope", // ✅ String
                 roles: ["ADMIN"],
             },
             {
-                title: "Patients",
-                href: "/admin/dashboard/patients-management",
+                title: " Create Chief Engineers",
+                href: "/admin/dashboard/create-chief-engineer",
                 icon: "Users", // ✅ String
                 roles: ["ADMIN"],
             },
         ],
     },
     {
-        title: "Hospital Management",
+        title: "User Management",
         items: [
             {
-                title: "Appointments",
-                href: "/admin/dashboard/appointments-management",
+                title: "All Workers",
+                href: "/admin/dashboard/all-workers",
                 icon: "Calendar", // ✅ String
                 roles: ["ADMIN"],
             },
@@ -157,8 +183,8 @@ export const getNavItemsByRole = (role: UserRole): NavSection[] => {
     switch (role) {
         case "ADMIN":
             return [...commonNavItems, ...adminNavItems];
-        // case "CHIEF_ENGINEER":
-        //     return [...commonNavItems, ...chiefEngineerNavItems];
+        case "CHIEF_ENGINEER":
+            return [...commonNavItems, ...chiefEngineerNavItems];
         case "SITE_ENGINEER":
             return [...commonNavItems, ...siteEngineerNavItems];
         case "WORKER":

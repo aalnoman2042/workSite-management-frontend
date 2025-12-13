@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { serverFetch } from "@/lib/server-fetch";
-import { getCookie } from "@/services/auth/tokenHandler";
 import React, { useState, FormEvent, useRef } from "react";
 import { toast } from "sonner";
 
@@ -45,7 +43,7 @@ const InputField = ({
 // --- End InputField ---
 
 
-const SiteEngineerCreatePage = () => {
+const ChiefEngineerCreatePage = () => {
   const [isPending, setIsPending] = useState(false);
   const [errors, setErrors] = useState<any[] | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -71,36 +69,43 @@ const SiteEngineerCreatePage = () => {
       email: formData.get("email"),
       password: formData.get("password"),
       contactNumber: formData.get("contactNumber"),
-      profilePhoto: formData.get("profilePhoto") || null,
+      profilePhoto: formData.get("profilePhoto") || "",
+
     };
 
-    // const token = getCookie("accessToken");
-    // console.log(token);
-    
-    try {
-const response = await serverFetch.post("/user/register-site-engineer", {
-      headers: {
-        "Content-Type": "application/json", 
-      },
-      body: JSON.stringify(payload),
-    }
-      );
 
-      const result = await response.json();
+
+    try {
+      const response = await serverFetch.post("/user/register-chief-engineer", {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload),
+      });
+
+      // If response is not ok, still attempt to parse JSON (backend may return structured errors)
+      let result: any = {};
+      try {
+        result = await response.json();
+      } catch (e) {
+        // non-json response
+        console.error("Non-JSON response from API:", e);
+      }
 
       if (!response.ok || !result.success) {
-        if (result.errors) {
+        if (result?.errors) {
           setErrors(result.errors);
           toast.error("Please correct the highlighted errors.");
         } else {
-          toast.error(result.message || "Failed to create Site Engineer.");
+          toast.error(result?.message || "Failed to create Chief Engineer.");
         }
+        setIsPending(false);
         return;
       }
 
       // Success
-      toast.success(" Site Engineer created successfully!");
-      setSuccessMessage("Site Engineer account created successfully!");
+      toast.success("Chief Engineer created successfully!");
+      setSuccessMessage("Chief Engineer account created successfully!");
 
       // SAFE RESET
       formRef.current?.reset();
@@ -119,10 +124,10 @@ const response = await serverFetch.post("/user/register-site-engineer", {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-800">
-            Create New Site Engineer
+            Create New Chief Engineer
           </h1>
           <p className="text-gray-500 mt-1">
-            Enter required details to create a new Site Engineer account.
+            Fill details to create a Chief Engineer account.
           </p>
         </div>
 
@@ -142,7 +147,7 @@ const response = await serverFetch.post("/user/register-site-engineer", {
             <InputField
               id="name"
               label="Full Name"
-              placeholder="Jane Smith"
+              placeholder="Md. Hasan"
               error={getFieldError("name")}
             />
 
@@ -150,7 +155,7 @@ const response = await serverFetch.post("/user/register-site-engineer", {
               id="email"
               label="Email"
               type="email"
-              placeholder="engineer@site.com"
+              placeholder="chief@company.com"
               error={getFieldError("email")}
             />
 
@@ -160,14 +165,10 @@ const response = await serverFetch.post("/user/register-site-engineer", {
               placeholder="01xxxxxxxxx"
               error={getFieldError("contactNumber")}
             />
+    
+            
 
-            <InputField
-              id="profilePhoto"
-              label="Profile Photo URL"
-              placeholder="https://example.com/photo.jpg"
-              required={false}
-              error={getFieldError("profilePhoto")}
-            />
+         
 
             <InputField
               id="password"
@@ -185,7 +186,7 @@ const response = await serverFetch.post("/user/register-site-engineer", {
               disabled={isPending}
               className="w-full bg-black text-white py-3 rounded-lg font-medium text-base hover:bg-neutral-800 transition-all duration-200 disabled:bg-neutral-400 disabled:cursor-not-allowed shadow-md"
             >
-              {isPending ? "Creating Engineer..." : "Create Site Engineer"}
+              {isPending ? "Creating Chief Engineer..." : "Create Chief Engineer"}
             </button>
           </div>
         </form>
@@ -194,4 +195,4 @@ const response = await serverFetch.post("/user/register-site-engineer", {
   );
 };
 
-export default SiteEngineerCreatePage;
+export default ChiefEngineerCreatePage;

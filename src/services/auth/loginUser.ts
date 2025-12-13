@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import z from "zod";
 import { setCookie } from "./tokenHandler";
 import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/lib/auth-utils";
+import { serverFetch } from "@/lib/server-fetch";
 
 const loginValidationZodSchema = z.object({
     email: z.email({
@@ -44,12 +45,9 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
             }
         }
 
-        const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-            method: "POST",
+        const res = await serverFetch.post("/auth/login", {
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(loginData),
-            headers: {
-                "Content-Type": "application/json",
-            },
         });
 
         const result = await res.json();

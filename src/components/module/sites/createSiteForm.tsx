@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
+import { useState, FormEvent, useRef } from "react";
 import { serverFetch } from "@/lib/server-fetch";
-import { getCookie } from "@/services/auth/tokenHandler";
-import React, { useState, FormEvent, useRef } from "react";
 import { toast } from "sonner";
 
 // --- InputField Helper Component ---
@@ -44,20 +42,17 @@ const InputField = ({
 );
 // --- End InputField ---
 
-
-const SiteEngineerCreatePage = () => {
+const CreateSitePage = () => {
   const [isPending, setIsPending] = useState(false);
   const [errors, setErrors] = useState<any[] | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const formRef = useRef<HTMLFormElement | null>(null);
 
-  // Get field-specific error
   const getFieldError = (fieldName: string) => {
     return errors?.find((err: any) => err.field === fieldName)?.message || null;
   };
 
-  // Handle form submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsPending(true);
@@ -68,23 +63,23 @@ const SiteEngineerCreatePage = () => {
 
     const payload = {
       name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      contactNumber: formData.get("contactNumber"),
-      profilePhoto: formData.get("profilePhoto") || null,
+      location: formData.get("location"),
+      address: formData.get("address"),
+      startDate: formData.get("startDate") ? new Date(formData.get("startDate") as string).toISOString() : null,
+      endDate: formData.get("endDate") ? new Date(formData.get("endDate") as string).toISOString() : null,
+      totalCost: formData.get("totalCost")
+        ? Number(formData.get("totalCost"))
+        : null,
     };
+// console.log(payload);
 
-    // const token = getCookie("accessToken");
-    // console.log(token);
-    
     try {
-const response = await serverFetch.post("/user/register-site-engineer", {
-      headers: {
-        "Content-Type": "application/json", 
-      },
-      body: JSON.stringify(payload),
-    }
-      );
+      const response = await serverFetch.post("/site", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
       const result = await response.json();
 
@@ -93,20 +88,18 @@ const response = await serverFetch.post("/user/register-site-engineer", {
           setErrors(result.errors);
           toast.error("Please correct the highlighted errors.");
         } else {
-          toast.error(result.message || "Failed to create Site Engineer.");
+          toast.error(result.message || "Failed to create Site.");
         }
         return;
       }
 
-      // Success
-      toast.success(" Site Engineer created successfully!");
-      setSuccessMessage("Site Engineer account created successfully!");
+      toast.success("Site created successfully!");
+      setSuccessMessage("Site created successfully!");
 
-      // SAFE RESET
+      // reset form
       formRef.current?.reset();
-
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
       toast.error("Unexpected error occurred.");
     } finally {
       setIsPending(false);
@@ -116,17 +109,13 @@ const response = await serverFetch.post("/user/register-site-engineer", {
   return (
     <div className="flex min-h-screen items-start justify-center p-6 bg-gray-50">
       <div className="w-full max-w-3xl bg-white rounded-xl shadow-lg p-8 space-y-8 mt-10">
-        {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Create New Site Engineer
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-800">Create New Site</h1>
           <p className="text-gray-500 mt-1">
-            Enter required details to create a new Site Engineer account.
+            Enter required details to create a new construction site.
           </p>
         </div>
 
-        {/* Success Message */}
         {successMessage && (
           <div
             className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
@@ -136,56 +125,61 @@ const response = await serverFetch.post("/user/register-site-engineer", {
           </div>
         )}
 
-        {/* Form */}
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
               id="name"
-              label="Full Name"
-              placeholder="Jane Smith"
+              label="Site Name"
+              placeholder="Bashundhara Block C Extension"
               error={getFieldError("name")}
             />
 
             <InputField
-              id="email"
-              label="Email"
-              type="email"
-              placeholder="engineer@site.com"
-              error={getFieldError("email")}
+              id="location"
+              label="Location"
+              placeholder="Bashundhara, Dhaka"
+              error={getFieldError("location")}
             />
 
             <InputField
-              id="contactNumber"
-              label="Contact Number"
-              placeholder="01xxxxxxxxx"
-              error={getFieldError("contactNumber")}
+              id="address"
+              label="Address"
+              placeholder="Plot 27, Road 5"
+              error={getFieldError("address")}
             />
 
             <InputField
-              id="profilePhoto"
-              label="Profile Photo URL"
-              placeholder="https://example.com/photo.jpg"
+              id="startDate"
+              label="Start Date"
+              type="date"
+              error={getFieldError("startDate")}
+            />
+
+            <InputField
+              id="endDate"
+              label="End Date"
+              type="date"
               required={false}
-              error={getFieldError("profilePhoto")}
+              error={getFieldError("endDate")}
             />
 
             <InputField
-              id="password"
-              label="Temporary Password"
-              type="password"
-              placeholder="Set initial password (min 6 chars)"
-              error={getFieldError("password")}
+              id="totalCost"
+              label="Total Cost"
+              type="number"
+              placeholder="1800000"
+              required={false}
+              error={getFieldError("totalCost")}
             />
           </div>
 
-          {/* Submit Button */}
           <div className="mt-6">
             <button
               type="submit"
               disabled={isPending}
               className="w-full bg-black text-white py-3 rounded-lg font-medium text-base hover:bg-neutral-800 transition-all duration-200 disabled:bg-neutral-400 disabled:cursor-not-allowed shadow-md"
             >
-              {isPending ? "Creating Engineer..." : "Create Site Engineer"}
+              {isPending ? "Creating..." : "Create Site"}
             </button>
           </div>
         </form>
@@ -194,4 +188,4 @@ const response = await serverFetch.post("/user/register-site-engineer", {
   );
 };
 
-export default SiteEngineerCreatePage;
+export default CreateSitePage;
