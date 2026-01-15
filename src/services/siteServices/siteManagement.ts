@@ -1,4 +1,5 @@
 import { serverFetch } from "@/lib/server-fetch";
+import { error } from "console";
 
 
 export const approveWorker = async (id: string, status: boolean) => {
@@ -26,3 +27,37 @@ export const getallSites = async () => {
     }
     return result.data;
 };
+
+
+
+export const assignTask = async (taskData: {
+    title: string;
+    description: string;
+    siteId: string;
+    workerId: string;
+    dueDate: Date;
+    workdate: Date;
+}) => {
+    console.log(taskData);
+    
+    try {
+        const res = await serverFetch.post("/work-assignment/create", {
+            body: JSON.stringify(taskData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        return res;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+        return {
+            success: false,
+            message: err?.message || "Task assignment failed",
+            
+            
+        };
+    }
+};
+// console.log(error);
+

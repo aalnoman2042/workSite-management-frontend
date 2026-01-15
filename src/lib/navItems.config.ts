@@ -39,24 +39,24 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
 
 export const siteEngineerNavItems: NavSection[] = [
     {
-        title: "Patient Management",
+        title: "Site Management",
         items: [
             {
-                title: "Appointments",
-                href: "/doctor/dashboard/appoinments",
-                icon: "Calendar", // ✅ String
-                badge: "3",
+                title: "Sites",
+                href: "/site-engineer/dashboard/sites",
+                icon: "task", // ✅ String
+                // badge: "3",
                 roles: ["SITE_ENGINEER"],
             },
             {
-                title: "My Schedules",
-                href: "/doctor/dashboard/my-schedules",
+                title: "Task Assignment",
+                href: "/site-engineer/dashboard/task-assign",
                 icon: "Clock", // ✅ String
                 roles: ["SITE_ENGINEER"],
             },
             {
-                title: "Prescriptions",
-                href: "/doctor/dashboard/prescriptions",
+                title: "Payments",
+                href: "/site-engineer/dashboard/payments",
                 icon: "FileText", // ✅ String
                 roles: ["SITE_ENGINEER"],
             },
