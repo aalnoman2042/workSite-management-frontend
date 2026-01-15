@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useTransition } from "react";
+import { useTransition, Suspense } from "react";
 import { Button } from "../ui/button";
 import {
   Select,
@@ -17,7 +17,7 @@ interface TablePaginationProps {
   totalPages: number;
 }
 
-const TablePagination = ({ currentPage, totalPages }: TablePaginationProps) => {
+const TablePaginationContent = ({ currentPage, totalPages }: TablePaginationProps) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
@@ -124,6 +124,14 @@ const TablePagination = ({ currentPage, totalPages }: TablePaginationProps) => {
         </Select>
       </div>
     </div>
+  );
+};
+
+const TablePagination = (props: TablePaginationProps) => {
+  return (
+    <Suspense fallback={null}>
+      <TablePaginationContent {...props} />
+    </Suspense>
   );
 };
 
