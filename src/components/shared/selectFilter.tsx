@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
+import { Suspense } from "react";
 import {
   Select,
   SelectContent,
@@ -16,7 +17,7 @@ interface SelectFilterProps {
   options: { label: string; value: string }[];
 }
 
-const SelectFilter = ({
+const SelectFilterContent = ({
   paramName,
   placeholder,
   options,
@@ -60,6 +61,14 @@ const SelectFilter = ({
         ))}
       </SelectContent>
     </Select>
+  );
+};
+
+const SelectFilter = (props: SelectFilterProps) => {
+  return (
+    <Suspense fallback={null}>
+      <SelectFilterContent {...props} />
+    </Suspense>
   );
 };
 
