@@ -2,6 +2,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import supportImage from "../../../assets/homePage/support.png";
+import fast from "../../../assets/homePage/fast.jpg";
+import secure from "../../../assets/homePage/secure.png";
 
 export default function WhyChooseUs() {
   return (
@@ -18,13 +21,13 @@ export default function WhyChooseUs() {
           <Card className="bg-neutral-900 border-neutral-800 shadow-xl rounded-2xl p-2">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <Image
-                src="/images/secure.svg"
+                src={secure}
                 alt="secure"
                 width={80}
                 height={80}
                 className="mb-4"
               />
-              <h3 className="text-xl font-semibold mb-2">Secure & Reliable</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">Secure & Reliable</h3>
               <p className="text-gray-400 text-sm">
                 Your data is protected with top-grade security and encrypted storage.
               </p>
@@ -34,13 +37,13 @@ export default function WhyChooseUs() {
           <Card className="bg-neutral-900 border-neutral-800 shadow-xl rounded-2xl p-2">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <Image
-                src="/images/fast.svg"
+                src={fast}
                 alt="fast"
                 width={80}
                 height={80}
                 className="mb-4"
               />
-              <h3 className="text-xl font-semibold mb-2">Fast & Efficient</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">Fast & Efficient</h3>
               <p className="text-gray-400 text-sm">
                 Powerful streamlined tools help you save time and manage workers instantly.
               </p>
@@ -50,13 +53,13 @@ export default function WhyChooseUs() {
           <Card className="bg-neutral-900 border-neutral-800 shadow-xl rounded-2xl p-2">
             <CardContent className="p-6 flex flex-col items-center text-center">
               <Image
-                src="/images/support.svg"
+                src={supportImage}
                 alt="support"
                 width={80}
                 height={80}
                 className="mb-4"
               />
-              <h3 className="text-xl font-semibold mb-2">24/7 Support</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white" >24/7 Support</h3>
               <p className="text-gray-400 text-sm">
                 Our support team is always ready to help keep your workflow smooth.
               </p>

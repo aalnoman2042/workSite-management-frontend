@@ -65,7 +65,7 @@ export const siteEngineerNavItems: NavSection[] = [
 ]
 export const chiefEngineerNavItems: NavSection[] = [
     {
-        title: "Patient Management",
+        title: "Site Management",
         items: [
             {
                 title: "create new site",
@@ -87,12 +87,23 @@ export const chiefEngineerNavItems: NavSection[] = [
                 roles: ["CHIEF_ENGINEER"],
             },
         ],
+    },
+    {
+        title: "AI Assistant",
+        items: [
+            {
+                title: "Ask AI",
+                href: "/ask-ai",
+                icon: "Sparkles", // ✅ String
+                roles: ["CHIEF_ENGINEER"],
+            },
+        ],
     }
 ]
 
 export const workerNavItems: NavSection[] = [
     {
-        title: "Appointments",
+        title: "my tasks",
         items: [
             {
                 title: "My Appointments",
@@ -171,6 +182,17 @@ export const adminNavItems: NavSection[] = [
                 title: "Specialities",
                 href: "/admin/dashboard/specialities-management",
                 icon: "Hospital", // ✅ String
+                roles: ["ADMIN"],
+            },
+        ],
+    },
+    {
+        title: "AI Assistant",
+        items: [
+            {
+                title: "Ask AI",
+                href: "/ask-ai",
+                icon: "Sparkles", // ✅ String
                 roles: ["ADMIN"],
             },
         ],

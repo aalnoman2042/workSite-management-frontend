@@ -17,7 +17,7 @@ const PayModal = ({ paymentId, onClose }: PayModalProps) => {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/v1/payments/worker-pay",
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/payments/worker-pay`,
         {
           method: "POST",
           headers: {
@@ -31,6 +31,8 @@ const PayModal = ({ paymentId, onClose }: PayModalProps) => {
       );
 
       const data = await res.json();
+      console.log(data);
+      
 
       if (!res.ok) {
         throw new Error(data?.message || "Failed to create payment session");

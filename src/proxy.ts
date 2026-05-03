@@ -1,37 +1,32 @@
 import { getDefaultDashboardRoute, getRouteOwner, isAuthRoute, UserRole } from '@/lib/auth-utils';
-import { deleteCookie } from '@/services/auth/tokenHandler';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-// import { getDefaultDashboardRoute, getRouteOwner, isAuthRoute, UserRole } from './lib/auth-utils';
-// import { deleteCookie } from './services/auth/tokenHandler';
 
 
 
 
 // This function can be marked `async` if using `await` inside
 export async function proxy(request: NextRequest) {
-  
-    
-    
+
+
+
     const pathname = request.nextUrl.pathname;
 
     const accessToken = request.cookies.get("accessToken")?.value || null;
 
     let userRole: UserRole | null = null;
     if (accessToken) {
-        const verifiedToken: JwtPayload | string = jwt.verify(accessToken, process.env.JWT_SECRET as string);
-
-        if (typeof verifiedToken === "string") {
-            // cookieStore.delete("accessToken");
-            // cookieStore.delete("refreshToken");
-            await deleteCookie("accessToken");
-            await deleteCookie("refreshToken");
-            return NextResponse.redirect(new URL('/login', request.url));
+        try {
+            const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+            const { payload } = await jwtVerify(accessToken, secret);
+            userRole = payload.role as UserRole;
+        } catch {
+            const response = NextResponse.redirect(new URL('/login', request.url));
+            response.cookies.delete("accessToken");
+            response.cookies.delete("refreshToken");
+            return response;
         }
-
-        userRole = verifiedToken.role;
     }
 
     const routerOwner = getRouteOwner(pathname);

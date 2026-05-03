@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import LogoutSuccessToast from "@/components/shared/logoutSuccessToast";
 import LoginSuccessToast from "@/components/shared/loginSuccessToast";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ph-health-care",
-  description: "A healthcare application built with Next.js",
+  title: "worksite manager",
+  description: "A worksite management application built with Next.js",
 };
 
 export default function RootLayout({
@@ -32,8 +33,12 @@ export default function RootLayout({
       >
         {children}
         <Toaster  position="top-right" richColors></Toaster>
-        <LogoutSuccessToast></LogoutSuccessToast>
-        <LoginSuccessToast></LoginSuccessToast>
+        <Suspense fallback={null}>
+          <LogoutSuccessToast></LogoutSuccessToast>
+        </Suspense>
+        <Suspense fallback={null}>
+          <LoginSuccessToast></LoginSuccessToast>
+        </Suspense>
       </body>
     </html>
   );

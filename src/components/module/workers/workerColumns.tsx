@@ -41,7 +41,7 @@ export const workersColumns: Column<IWorker>[] = [
     accessor: (worker) => (
       <div className="flex items-center gap-1 text-sm font-medium text-green-600">
         <DollarSign className="h-4 w-4" />
-        {worker.dailyRate ? `$${worker.dailyRate}` : "N/A"}
+        {worker.dailyRate ? `${worker.dailyRate}` : "N/A"}
       </div>
     ),
   },

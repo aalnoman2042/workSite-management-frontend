@@ -3,6 +3,8 @@ import DashboardNavbar from "@/components/module/Dashboard/DasboardNavbar";
 import DashboardSidebar from "@/components/module/Dashboard/DashboardSidebar";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 const CommonDashboardLayout = async ({
   children,
 }: {

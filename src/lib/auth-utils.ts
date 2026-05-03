@@ -15,7 +15,7 @@ export const authRoutes = [
 
 // Common protected routes
 export const commonProtectedRoutes: RouteConfig = {
-  exact: ["/my-profile", "/settings"],
+  exact: ["/my-profile", "/settings", "/ask-ai"],
   patterns: [],
 };
 

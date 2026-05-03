@@ -15,10 +15,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>AI-Powered Healthcare - Find Your Perfect Doctor</title>
+        <title>AI-Powered Worksite Manager - Find Your Perfect Worker management system</title>
         <meta
           name="description"
-          content="Discover top-rated doctors tailored to your needs with our AI-powered healthcare platform. Get personalized recommendations and book appointments effortlessly."
+          content="Discover top-rated workers tailored to your needs with our AI-powered worksite management platform. Get personalized recommendations and manage your workforce effortlessly."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

@@ -6,7 +6,8 @@ const Page = async () => {
   const allPayments = await serverFetch.get("/payments/all?status=DUE");
   const res = await allPayments.json();
 
-  console.log(res);
+console.log(res);
+
   
   return (
     <div>
