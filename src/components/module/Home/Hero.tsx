@@ -5,22 +5,22 @@ import Image from "next/image";
 
 export function WorksiteHero() {
   return (
-    <section className="w-full bg-black text-white py-24 px-6">
+    <section className="w-full bg-transparent text-white py-24 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-        
+
         {/* LEFT CONTENT */}
         <div className="space-y-6">
           <span className="text-sm tracking-widest text-gray-400 uppercase">
             Worksite Management System
           </span>
 
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-            Manage Your <span className="text-white/80">Workers & Sites</span>  
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight">
+            Manage Your <span className="text-white/80">Workers & Sites</span>
             Effortlessly.
           </h1>
 
           <p className="text-gray-400 text-lg max-w-lg">
-            Track attendance, monitor daily activity, manage workers, and 
+            Track attendance, monitor daily activity, manage workers, and
             streamline your entire construction workflow — all in one unified dashboard.
           </p>
 

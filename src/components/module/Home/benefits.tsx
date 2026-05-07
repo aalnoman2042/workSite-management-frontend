@@ -1,3 +1,10 @@
+const cardTints = [
+  "bg-purple-950/40 border-purple-900/40",
+  "bg-emerald-950/40 border-emerald-900/40",
+  "bg-amber-950/40 border-amber-900/40",
+  "bg-rose-950/40 border-rose-900/40",
+];
+
 export default function BenefitsSection() {
   const benefits = [
     {
@@ -23,10 +30,10 @@ export default function BenefitsSection() {
   ];
 
   return (
-    <section className="w-full bg-white px-6 sm:px-12 lg:px-20 py-20">
+    <section className="w-full bg-transparent px-6 sm:px-12 lg:px-20 py-20 text-white">
       <div className="max-w-7xl mx-auto text-center mb-14">
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-black mb-4">Why Choose Our System?</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
+        <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">Why Choose Our System?</h2>
+        <p className="text-zinc-400 max-w-2xl mx-auto text-sm sm:text-base">
           A clean, powerful and reliable platform built for managing construction workforce efficiently.
         </p>
       </div>
@@ -35,13 +42,13 @@ export default function BenefitsSection() {
         {benefits.map((item, idx) => (
           <div
             key={idx}
-            className="group bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:border-black"
+            className={`group border rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${cardTints[idx % cardTints.length]}`}
           >
             <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
               {item.icon}
             </div>
-            <h3 className="text-lg sm:text-xl font-semibold text-black mb-2">{item.title}</h3>
-            <p className="text-gray-600 text-sm sm:text-base">{item.desc}</p>
+            <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">{item.title}</h3>
+            <p className="text-zinc-300 text-sm sm:text-base">{item.desc}</p>
           </div>
         ))}
       </div>

@@ -2,6 +2,15 @@
 
 import { Cpu, Users, ClipboardCheck, Wallet, Shield, BarChart3 } from "lucide-react";
 
+const cardTints = [
+  "bg-purple-950/40 border-purple-900/40",
+  "bg-emerald-950/40 border-emerald-900/40",
+  "bg-amber-950/40 border-amber-900/40",
+  "bg-rose-950/40 border-rose-900/40",
+  "bg-slate-800/60 border-slate-700/50",
+  "bg-teal-950/40 border-teal-900/40",
+];
+
 export default function KeyFeatures() {
   const features = [
     {
@@ -37,15 +46,15 @@ export default function KeyFeatures() {
   ];
 
   return (
-    <section className="w-full py-16 bg-white dark:bg-black">
+    <section className="w-full py-16 bg-transparent text-white">
       <div className="max-w-6xl mx-auto px-4 text-center">
-        
+
         {/* Heading */}
-        <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">
           Powerful Features to Manage Your Workforce
         </h2>
 
-        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-12">
+        <p className="text-zinc-400 max-w-2xl mx-auto mb-12">
           Everything you need to run your construction workforce efficiently — all in one dashboard.
         </p>
 
@@ -54,12 +63,11 @@ export default function KeyFeatures() {
           {features.map((item, i) => (
             <div
               key={i}
-              className="p-6 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-neutral-900
-                         hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              className={`p-6 border rounded-xl ${cardTints[i % cardTints.length]} hover:-translate-y-1 transition-all duration-300`}
             >
-              <div className="text-black dark:text-white mb-4">{item.icon}</div>
+              <div className="text-white mb-4">{item.icon}</div>
               <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">{item.desc}</p>
+              <p className="text-zinc-300 text-sm">{item.desc}</p>
             </div>
           ))}
         </div>

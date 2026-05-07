@@ -9,14 +9,14 @@ import {
 
 export default function FAQSection() {
   return (
-    <section className="w-full py-20 bg-background text-foreground">
+    <section className="w-full py-20 bg-transparent text-white">
       <div className="max-w-6xl mx-auto px-4">
         {/* Title */}
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
             Frequently Asked Questions
           </h2>
-          <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
+          <p className="text-zinc-400 mt-3 max-w-xl mx-auto">
             Answers to common questions about managing workers, sites and attendance.
           </p>
         </div>
@@ -27,12 +27,12 @@ export default function FAQSection() {
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem
               value="item-1"
-              className="border border-border rounded-xl px-4"
+              className="border border-white/10 rounded-xl px-4 bg-white/5"
             >
               <AccordionTrigger className="text-lg font-medium">
                 How do site engineers take worker attendance?
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-zinc-400">
                 Site engineers select a worker and mark present. The system logs
                 everything automatically.
               </AccordionContent>
@@ -40,24 +40,24 @@ export default function FAQSection() {
 
             <AccordionItem
               value="item-2"
-              className="border border-border rounded-xl px-4"
+              className="border border-white/10 rounded-xl px-4 bg-white/5"
             >
               <AccordionTrigger className="text-lg font-medium">
                 Can chief engineers manage site engineers?
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-zinc-400">
                 Yes, they can monitor sites, workers and verify attendance.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem
               value="item-3"
-              className="border border-border rounded-xl px-4"
+              className="border border-white/10 rounded-xl px-4 bg-white/5"
             >
               <AccordionTrigger className="text-lg font-medium">
                 Is the system mobile friendly?
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-zinc-400">
                 Everything is optimized for mobile, tablet and desktop.
               </AccordionContent>
             </AccordionItem>
@@ -67,12 +67,12 @@ export default function FAQSection() {
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem
               value="item-4"
-              className="border border-border rounded-xl px-4"
+              className="border border-white/10 rounded-xl px-4 bg-white/5"
             >
               <AccordionTrigger className="text-lg font-medium">
                 How is worker payment calculated?
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-zinc-400">
                 Payments are auto-calculated based on attendance recorded by site
                 engineers.
               </AccordionContent>
@@ -80,24 +80,24 @@ export default function FAQSection() {
 
             <AccordionItem
               value="item-5"
-              className="border border-border rounded-xl px-4"
+              className="border border-white/10 rounded-xl px-4 bg-white/5"
             >
               <AccordionTrigger className="text-lg font-medium">
                 Can admins manage all roles?
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-zinc-400">
                 Yes, admins can manage users, sites, attendance, and system settings.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem
               value="item-6"
-              className="border border-border rounded-xl px-4"
+              className="border border-white/10 rounded-xl px-4 bg-white/5"
             >
               <AccordionTrigger className="text-lg font-medium">
                 Is my data secure?
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-zinc-400">
                 Your data is secured using encryption and role-based access control.
               </AccordionContent>
             </AccordionItem>

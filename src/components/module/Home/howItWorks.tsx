@@ -1,3 +1,9 @@
+const cardTints = [
+  "bg-purple-950/40 border-purple-900/40",
+  "bg-emerald-950/40 border-emerald-900/40",
+  "bg-teal-950/40 border-teal-900/40",
+];
+
 export default function HowItWorks() {
   const steps = [
     {
@@ -21,18 +27,18 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="w-full bg-white py-16 px-4 sm:px-8 lg:px-16">
+    <section className="w-full bg-transparent py-16 px-4 sm:px-8 lg:px-16">
       <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-4">How It Works</h2>
-        <p className="text-gray-600 mb-12 text-sm sm:text-base">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">How It Works</h2>
+        <p className="text-zinc-400 mb-12 text-sm sm:text-base">
           Your workflow simplified into 3 easy steps.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {steps.map((step) => (
+          {steps.map((step, i) => (
             <div
               key={step.id}
-              className="relative bg-black text-white rounded-2xl p-8 shadow-xl hover:scale-[1.03] transition-all duration-300"
+              className={`relative border text-white rounded-2xl p-8 shadow-xl hover:scale-[1.03] transition-all duration-300 ${cardTints[i % cardTints.length]}`}
             >
               {/* Step Number */}
               <div className="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-bold text-xl shadow-md">
@@ -40,7 +46,7 @@ export default function HowItWorks() {
               </div>
 
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="text-zinc-300 text-sm leading-relaxed">
                 {step.description}
               </p>
             </div>
