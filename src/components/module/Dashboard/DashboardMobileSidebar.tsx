@@ -20,21 +20,25 @@ interface DashboardMobileSidebarContentProps {
 const DashboardMobileSidebar = ({
   userInfo,
   navItems,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dashboardHome,
 }: DashboardMobileSidebarContentProps) => {
   const pathname = usePathname();
   return (
-    <div className=" flex h-full flex-col">
+    // min-h-0 is what makes this scroll. A flex item defaults to min-height: auto, so it
+    // refuses to shrink below its content — the nav grew past the sheet instead of
+    // scrolling inside it, and the links at the bottom were simply unreachable.
+    <div className="flex h-full min-h-0 flex-col">
       {/* Logo */}
       <div className="flex h-16 items-center border-b px-6">
-        <Link href={dashboardHome}>
-          <span className="text-xl font-bold text-primary">PH Healthcare</span>
+        <Link href="/">
+          <span className="text-xl font-bold text-primary">Worksite Manager</span>
         </Link>
       </div>
       <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-4">
+      <ScrollArea className="min-h-0 flex-1 px-3 py-4">
         <nav className="space-y-6">
           {navItems.map((section, sectionIdx) => (
             <div key={sectionIdx}>

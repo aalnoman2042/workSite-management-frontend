@@ -1,12 +1,15 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+// The Radix package's ScrollArea is the bare Root — it renders no Viewport, so it cannot
+// scroll at all. This was importing that one, which is why a long sidebar was clipped with
+// no way to reach the items at the bottom. Use the shadcn wrapper, which adds the Viewport.
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { getIconComponent } from "@/lib/icon-mapper";
 import { cn } from "@/lib/utils";
 import { NavSection } from "@/types/dashboard.interface";
 import { UserInfo } from "@/types/user.interface";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,7 +27,7 @@ const DashboardSidebarContent = ({
 }: DashboardSidebarContentProps) => {
   const pathname = usePathname();
   return (
-    <div className="hidden md:flex h-full w-64 flex-col border-r bg-card">
+    <div className="hidden md:flex h-full min-h-0 w-64 flex-col border-r bg-card">
       {/* Logo/Brand */}
       <div className="flex h-16 items-center border-b px-6">
         <Link href="/" className="flex items-center space-x-2">
@@ -32,8 +35,9 @@ const DashboardSidebarContent = ({
         </Link>
       </div>
 
-      {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-4">
+      {/* Navigation — min-h-0 so the flex item can shrink below its content and scroll,
+          rather than growing and pushing the user block off the bottom. */}
+      <ScrollArea className="min-h-0 flex-1 px-3 py-4">
         <nav className="space-y-6">
           {navItems.map((section, sectionIdx) => (
             <div key={sectionIdx}>
