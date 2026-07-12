@@ -1,97 +1,77 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { formatCurrency } from "@/lib/formatters";
+import { createPaymentCheckout } from "@/services/paymentServices/paymentManagement";
+import { IWorkerPayment } from "@/types/payment.interface";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface PayModalProps {
-  paymentId: string;
+  payment: IWorkerPayment | null;
   onClose: () => void;
 }
 
-const PayModal = ({ paymentId, onClose }: PayModalProps) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const PayModal = ({ payment, onClose }: PayModalProps) => {
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handlePay = async () => {
-    setLoading(true);
-    setError(null);
+    if (!payment) return;
 
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_API_URL}/payments/worker-pay`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            paymentId, // ✅ ONLY this
-          }),
-        }
-      );
+    setIsRedirecting(true);
 
-      const data = await res.json();
-      console.log(data);
-      
+    // The checkout session is created on the server, so serverFetch can forward the auth
+    // cookie. The old modal called the backend straight from the browser, which cannot work
+    // once frontend and backend sit on different domains.
+    const result = await createPaymentCheckout(payment.id);
 
-      if (!res.ok) {
-        throw new Error(data?.message || "Failed to create payment session");
-      }
-
-      // ✅ Redirect to Stripe Checkout
-      if (data?.data?.checkoutUrl) {
-        window.location.href = data.data.checkoutUrl;
-      } else {
-        throw new Error("Checkout URL not found");
-      }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      setError(err.message);
-      setLoading(false);
+    if (!result.success || !result.checkoutUrl) {
+      toast.error(result.message || "Could not start the payment.");
+      setIsRedirecting(false);
+      return;
     }
+
+    window.location.href = result.checkoutUrl;
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.4)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 1000,
-      }}
-    >
-      <div
-        style={{
-          background: "#fff",
-          padding: 20,
-          minWidth: 320,
-          borderRadius: 6,
-        }}
-      >
-        <h3>Confirm Payment</h3>
+    <Dialog open={!!payment} onOpenChange={(open) => !open && !isRedirecting && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Confirm payment</DialogTitle>
+          <DialogDescription>
+            You are about to pay {payment?.worker?.name ?? "this worker"}. Stripe will open to
+            complete the payment.
+          </DialogDescription>
+        </DialogHeader>
 
-        <p>Are you sure you want to proceed with this payment?</p>
-
-        {error && (
-          <p style={{ color: "red", marginBottom: 10 }}>
-            {error}
-          </p>
-        )}
-
-        <div style={{ display: "flex", gap: 10 }}>
-          <button onClick={handlePay} disabled={loading}>
-            {loading ? "Redirecting..." : "Pay Now"}
-          </button>
-
-          <button onClick={onClose} disabled={loading}>
-            Cancel
-          </button>
+        <div className="rounded-lg border p-4">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Amount due</span>
+            <span className="text-xl font-bold">{formatCurrency(payment?.totalAmountDue)}</span>
+          </div>
         </div>
-      </div>
-    </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose} disabled={isRedirecting}>
+            Cancel
+          </Button>
+          <Button onClick={handlePay} disabled={isRedirecting}>
+            {isRedirecting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isRedirecting ? "Redirecting to Stripe..." : "Pay now"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -60,6 +60,12 @@ export const siteEngineerNavItems: NavSection[] = [
                 icon: "FileText", // ✅ String
                 roles: ["SITE_ENGINEER"],
             },
+            {
+                title: "Attendance",
+                href: "/site-engineer/dashboard/attendance",
+                icon: "CalendarCheck",
+                roles: ["SITE_ENGINEER"],
+            },
         ],
     }
 ]
@@ -86,6 +92,18 @@ export const chiefEngineerNavItems: NavSection[] = [
                 icon: "FileText", // ✅ String
                 roles: ["CHIEF_ENGINEER"],
             },
+            {
+                title: "Attendance",
+                href: "/chief-engineer/dashboard/attendance",
+                icon: "CalendarCheck",
+                roles: ["CHIEF_ENGINEER"],
+            },
+            {
+                title: "Payments",
+                href: "/chief-engineer/dashboard/payments",
+                icon: "Wallet",
+                roles: ["CHIEF_ENGINEER"],
+            },
         ],
     },
     {
@@ -102,6 +120,17 @@ export const chiefEngineerNavItems: NavSection[] = [
 ]
 
 export const workerNavItems: NavSection[] = [
+    {
+        title: "Attendance & Pay",
+        items: [
+            {
+                title: "My Attendance",
+                href: "/dashboard/my-attendance",
+                icon: "CalendarCheck",
+                roles: ["WORKER"],
+            },
+        ],
+    },
     {
         title: "my tasks",
         items: [
@@ -170,6 +199,24 @@ export const adminNavItems: NavSection[] = [
                 title: "All Workers",
                 href: "/admin/dashboard/all-workers",
                 icon: "Calendar", // ✅ String
+                roles: ["ADMIN"],
+            },
+            {
+                title: "Attendance",
+                href: "/admin/dashboard/attendance",
+                icon: "CalendarCheck",
+                roles: ["ADMIN"],
+            },
+            {
+                title: "Payments",
+                href: "/admin/dashboard/payments",
+                icon: "Wallet",
+                roles: ["ADMIN"],
+            },
+            {
+                title: "Sites",
+                href: "/admin/dashboard/sites",
+                icon: "Building2",
                 roles: ["ADMIN"],
             },
             {

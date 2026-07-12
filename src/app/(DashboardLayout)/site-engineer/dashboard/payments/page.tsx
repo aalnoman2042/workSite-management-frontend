@@ -1,20 +1,13 @@
-// import PaymentsTable from "./payments-table";
-import PaymentsTable from "@/components/module/payment/payments.table";
-import { serverFetch } from "@/lib/server-fetch";
+import PaymentsManagementView from "@/components/module/payment/paymentsManagementView";
 
-const Page = async () => {
-  const allPayments = await serverFetch.get("/payments/all?status=DUE");
-  const res = await allPayments.json();
+const SiteEngineerPaymentsPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
+  const searchParamsObj = await searchParams;
 
-console.log(res);
-
-  
-  return (
-    <div>
-      <h1>Due Payments</h1>
-      <PaymentsTable payments={res?.data} />
-    </div>
-  );
+  return <PaymentsManagementView searchParams={searchParamsObj} canPay />;
 };
 
-export default Page;
+export default SiteEngineerPaymentsPage;

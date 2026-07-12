@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, FormEvent, useRef } from "react";
-import { serverFetch } from "@/lib/server-fetch";
+import { createSite } from "@/services/siteServices/siteManagement";
 import { toast } from "sonner";
 
 // --- InputField Helper Component ---
@@ -62,28 +62,23 @@ const CreateSitePage = () => {
     const formData = new FormData(formRef.current!);
 
     const payload = {
-      name: formData.get("name"),
-      location: formData.get("location"),
-      address: formData.get("address"),
+      name: formData.get("name") as string,
+      location: (formData.get("location") as string) || null,
+      address: formData.get("address") as string,
       startDate: formData.get("startDate") ? new Date(formData.get("startDate") as string).toISOString() : null,
       endDate: formData.get("endDate") ? new Date(formData.get("endDate") as string).toISOString() : null,
       totalCost: formData.get("totalCost")
         ? Number(formData.get("totalCost"))
         : null,
     };
-// console.log(payload);
 
     try {
-      const response = await serverFetch.post("/site", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      // Goes through a server action so the auth cookie is forwarded. Calling the API
+      // directly from the browser dropped the Cookie header, which stopped working the
+      // moment POST /site became auth(CHIEF_ENGINEER).
+      const result = await createSite(payload);
 
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         if (result.errors) {
           setErrors(result.errors);
           toast.error("Please correct the highlighted errors.");

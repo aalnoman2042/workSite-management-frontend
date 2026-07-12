@@ -38,8 +38,10 @@ export const siteEngineerProtectedRoutes: RouteConfig = {
 };
 
 // Worker routes
+// The worker dashboard lives at /dashboard (see getDefaultDashboardRoute), so it has to be
+// matched here too — otherwise getRouteOwner returns null and the proxy treats it as public.
 export const workerProtectedRoutes: RouteConfig = {
-  patterns: [/^\/worker/],
+  patterns: [/^\/worker/, /^\/dashboard/],
   exact: [],
 };
 
