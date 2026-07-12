@@ -42,7 +42,9 @@ const WorkerViewDetailDialog = ({ open, onClose, worker }: IWorkerViewDialogProp
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="min-w-5xl max-h-[90vh] flex flex-col p-0">
+      {/* was min-w-5xl — a 64rem *minimum*, which forced the dialog to 1024px wide on a 375px
+          phone and blew out of the viewport. A responsive max-width lets it shrink. */}
+      <DialogContent className="flex max-h-[90vh] flex-col p-0 sm:max-w-5xl">
         <DialogHeader className="px-6 pt-6 pb-4">
           <DialogTitle>Worker Profile</DialogTitle>
         </DialogHeader>
