@@ -1,5 +1,6 @@
-import { getCookie } from "@/services/auth/tokenHandler";
-import { Menu } from "lucide-react";
+import { getDefaultDashboardRoute } from "@/lib/auth-utils";
+import { getUserInfo } from "@/services/auth/getUserInfo";
+import { LayoutDashboard, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../assets/logo/brandLogo.png";
@@ -18,7 +19,11 @@ const navItems = [
 ];
 
 const PublicNavbar = async () => {
-  const accessToken = await getCookie("accessToken");
+  // getUserInfo verifies the token rather than just checking that a cookie exists, so an
+  // expired or tampered token falls back to the signed-out state instead of showing a
+  // Dashboard button that would only bounce the visitor to /login.
+  const userInfo = await getUserInfo();
+  const dashboardHref = userInfo ? getDefaultDashboardRoute(userInfo.role) : null;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/70 backdrop-blur-xl">
@@ -41,8 +46,16 @@ const PublicNavbar = async () => {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          {accessToken ? (
-            <LogoutButton />
+          {dashboardHref ? (
+            <>
+              <Button asChild size="sm" className="group">
+                <Link href={dashboardHref}>
+                  <LayoutDashboard className="mr-2 h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                  Dashboard
+                </Link>
+              </Button>
+              <LogoutButton variant="outline" />
+            </>
           ) : (
             <>
               <Button asChild variant="ghost" size="sm">
@@ -77,8 +90,20 @@ const PublicNavbar = async () => {
                 ))}
 
                 <div className="mt-4 flex flex-col gap-2 border-t pt-4">
-                  {accessToken ? (
-                    <LogoutButton />
+                  {dashboardHref ? (
+                    <>
+                      <p className="px-3 pb-1 text-sm text-muted-foreground">
+                        Signed in as{" "}
+                        <span className="font-medium text-foreground">{userInfo?.name}</span>
+                      </p>
+                      <Button asChild className="w-full">
+                        <Link href={dashboardHref}>
+                          <LayoutDashboard className="mr-2 h-4 w-4" />
+                          Dashboard
+                        </Link>
+                      </Button>
+                      <LogoutButton variant="outline" className="w-full" />
+                    </>
                   ) : (
                     <>
                       <Button asChild variant="outline" className="w-full">

@@ -1,6 +1,12 @@
 import PublicFooter from "@/components/shared/publicFooter";
 import PublicNavbar from "@/components/shared/publicNavbar";
 
+// The navbar reads the auth cookie to decide between "Sign in / Get started" and
+// "Dashboard / Logout", so these pages cannot be prerendered. They were already dynamic for
+// the same reason; saying so explicitly stops Next attempting a static pass and logging a
+// DynamicServerError that getUserInfo's try/catch swallows.
+export const dynamic = "force-dynamic";
+
 // The public site and the dashboard now share one theme. The shell is light, matching the
 // app, and darkness is used deliberately as bands — the hero, the CTA and the footer each
 // carry the `dark` class, which flips the tokens for that section only. Nothing hardcodes a
