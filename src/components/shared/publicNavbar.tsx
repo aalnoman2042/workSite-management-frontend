@@ -1,91 +1,93 @@
+import { getCookie } from "@/services/auth/tokenHandler";
 import { Menu } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import logo from "../../assets/logo/brandLogo.png";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
-import { getCookie } from "@/services/auth/tokenHandler";
 import LogoutButton from "./loginButton";
-import logo from "../../assets/logo/brandLogo.png";
-import Image from "next/image";
+
+// These used to point at /sites, /workers, /attendance and /contact — none of which exist as
+// public routes, so every link in the header 404'd. They now go to real destinations.
+const navItems = [
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#roles", label: "Roles" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/about", label: "About" },
+];
 
 const PublicNavbar = async () => {
   const accessToken = await getCookie("accessToken");
 
-  const navItems = [
-    { href: "/about", label: "About" },
-    { href: "/sites", label: "Sites" },
-    { href: "/workers", label: "Workers" },
-    { href: "/attendance", label: "Attendance" },
-    { href: "/contact", label: "Contact" },
-  ];
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/90 backdrop-blur-xl">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <Image src={logo} alt="WorkSite Manager Logo" className="h-10 w-10 bg-transparent" />
-          {/* <span className="text-xl font-bold text-white">WorkSite Manager</span> */}
+    <header className="sticky top-0 z-50 w-full border-b bg-background/70 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <Link href="/" className="flex items-center gap-2.5">
+          <Image src={logo} alt="WorkSite Manager" className="h-8 w-8" />
+          <span className="text-sm font-semibold tracking-tight">WorkSite Manager</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <nav className="hidden items-center gap-8 md:flex">
           {navItems.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="text-white/70 hover:text-white transition-colors"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        {/* Login/Logout */}
-        <div className="hidden md:flex items-center space-x-2">
+        <div className="hidden items-center gap-2 md:flex">
           {accessToken ? (
             <LogoutButton />
           ) : (
-            <Link href="/login">
-              <Button className="bg-white text-black hover:bg-gray-200 rounded-lg px-6">
-                Login
+            <>
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/login">Sign in</Link>
               </Button>
-            </Link>
+              <Button asChild size="sm">
+                <Link href="/register">Get started</Link>
+              </Button>
+            </>
           )}
         </div>
 
-        {/* Mobile Menu */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" className="border-white text-white">
-                <Menu className="w-5 h-5" />
+              <Button variant="outline" size="icon">
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] p-4 bg-black text-white">
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+            <SheetContent side="right" className="w-[300px] p-6">
+              <SheetTitle className="sr-only">Navigation menu</SheetTitle>
 
-              <nav className="flex flex-col space-y-4 mt-8">
+              <nav className="mt-8 flex flex-col gap-1">
                 {navItems.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="text-lg font-medium text-white/80 hover:text-white"
+                    className="rounded-lg px-3 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                   >
                     {link.label}
                   </Link>
                 ))}
 
-                {/* Mobile Login / Logout */}
-                <div className="border-t border-white/10 pt-4 flex flex-col space-y-4">
+                <div className="mt-4 flex flex-col gap-2 border-t pt-4">
                   {accessToken ? (
                     <LogoutButton />
                   ) : (
-                    <Link href="/login">
-                      <Button className="w-full bg-white text-black hover:bg-gray-200 rounded-lg">
-                        Login
+                    <>
+                      <Button asChild variant="outline" className="w-full">
+                        <Link href="/login">Sign in</Link>
                       </Button>
-                    </Link>
+                      <Button asChild className="w-full">
+                        <Link href="/register">Get started</Link>
+                      </Button>
+                    </>
                   )}
                 </div>
               </nav>

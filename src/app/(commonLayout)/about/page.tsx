@@ -1,208 +1,195 @@
+import { Eyebrow, Section, SectionHeading } from "@/components/module/Home/section";
+import Reveal from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Users, ClipboardCheck, Wallet, MapPin, Shield, HardHat, UserCog } from "lucide-react";
+import type { Metadata } from "next";
+import {
+  ArrowRight,
+  ClipboardCheck,
+  HardHat,
+  MapPin,
+  Shield,
+  Sparkles,
+  UserCog,
+  Users,
+  Wallet,
+} from "lucide-react";
 import Link from "next/link";
 
-const offeringTints = [
-  "bg-purple-950/40 border-purple-900/40",
-  "bg-emerald-950/40 border-emerald-900/40",
-  "bg-amber-950/40 border-amber-900/40",
-  "bg-rose-950/40 border-rose-900/40",
+export const metadata: Metadata = {
+  title: "About — WorkSite Manager",
+  description:
+    "Why we built WorkSite Manager: construction still runs on pen and paper. One platform for workers, sites, attendance and payments, with a dashboard for every role.",
+};
+
+const offerings = [
+  {
+    icon: Users,
+    title: "Worker management",
+    desc: "Add, approve and track every worker from one roster. Positions, rates and status in one place.",
+  },
+  {
+    icon: MapPin,
+    title: "Site coordination",
+    desc: "Stand up a site in minutes, track its status and schedule, and see the crew working it.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Attendance",
+    desc: "Mark present, absent or half-day on site. Every record is traceable to the engineer who took it.",
+  },
+  {
+    icon: Wallet,
+    title: "Payments",
+    desc: "Daily and half-day rates applied automatically from attendance, then settled through Stripe.",
+  },
 ];
 
-const roleTints = [
-  "bg-slate-800/60 border-slate-700/50",
-  "bg-teal-950/40 border-teal-900/40",
-  "bg-purple-950/40 border-purple-900/40",
-  "bg-emerald-950/40 border-emerald-900/40",
+const roles = [
+  {
+    icon: Shield,
+    title: "Admin",
+    desc: "Full oversight. Creates engineers, manages workers, and sees the whole organisation.",
+  },
+  {
+    icon: UserCog,
+    title: "Chief Engineer",
+    desc: "Creates sites, approves workers, and watches attendance and dues across every project.",
+  },
+  {
+    icon: HardHat,
+    title: "Site Engineer",
+    desc: "Assigns tasks, records attendance, and pays workers — scoped to their own sites.",
+  },
+  {
+    icon: Users,
+    title: "Worker",
+    desc: "Sees their own tasks, attendance and pay. Nothing belonging to anyone else.",
+  },
 ];
+
+const IconGrid = ({
+  items,
+}: {
+  items: { icon: React.ElementType; title: string; desc: string }[];
+}) => (
+  <div className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-2 lg:grid-cols-4">
+    {items.map(({ icon: Icon, title, desc }, index) => (
+      <Reveal key={title} delay={index * 70} className="h-full">
+        <div className="group h-full bg-card p-8 transition-colors hover:bg-muted/50">
+          <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform duration-200 group-hover:scale-105">
+            <Icon className="h-5 w-5" />
+          </div>
+          <h3 className="mb-2 text-base font-medium">{title}</h3>
+          <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
+        </div>
+      </Reveal>
+    ))}
+  </div>
+);
 
 export default function AboutPage() {
-  const offerings = [
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "Worker Management",
-      desc: "Add, approve, and track every worker from one dashboard. No more spreadsheets.",
-    },
-    {
-      icon: <MapPin className="w-8 h-8" />,
-      title: "Site Coordination",
-      desc: "Spin up new construction sites in minutes and assign engineers and workers cleanly.",
-    },
-    {
-      icon: <ClipboardCheck className="w-8 h-8" />,
-      title: "Smart Attendance",
-      desc: "Mark daily attendance with role-based access. Records sync in real time.",
-    },
-    {
-      icon: <Wallet className="w-8 h-8" />,
-      title: "Auto Payments",
-      desc: "Daily and half-day rates calculated automatically from attendance data.",
-    },
-  ];
-
-  const roles = [
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "Admin",
-      desc: "Full system control. Create engineers, manage workers, oversee everything.",
-    },
-    {
-      icon: <UserCog className="w-8 h-8" />,
-      title: "Chief Engineer",
-      desc: "Create sites, approve workers, manage workforce assignments across projects.",
-    },
-    {
-      icon: <HardHat className="w-8 h-8" />,
-      title: "Site Engineer",
-      desc: "Assign daily tasks, record attendance on-site, process worker payments.",
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "Worker",
-      desc: "View tasks, profile, and payments. Get paid on time, every time.",
-    },
-  ];
-
   return (
-    <main className="relative bg-linear-to-b from-zinc-700 via-neutral-700 to-zinc-800 text-white min-h-screen overflow-hidden">
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-400/15 blur-[120px] rounded-full" />
-
-      {/* HERO */}
-      <section className="w-full bg-transparent py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <span className="text-sm tracking-widest text-zinc-400 uppercase">
-            About Us
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+    <>
+      <section className="dark relative w-full overflow-hidden bg-background px-6 py-24 text-foreground sm:py-32">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.4] bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[64px_64px] mask-[radial-gradient(ellipse_at_center,black,transparent_75%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-32 left-1/2 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-primary/20 blur-[130px]"
+        />
+        <div className="relative mx-auto max-w-3xl space-y-6 text-center">
+          <div className="reveal-now">
+            <Eyebrow>About</Eyebrow>
+          </div>
+          <h1
+            className="reveal-now text-4xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-5xl"
+            style={{ animationDelay: "90ms" }}
+          >
             Built for the people who actually run construction sites.
           </h1>
-          <p className="text-zinc-300 text-lg max-w-2xl mx-auto">
-            WorkSite Manager replaces paperwork, spreadsheets, and group-chat chaos
-            with a single platform that handles workers, sites, attendance, and
-            payments — end to end.
+          <p
+            className="reveal-now text-lg leading-relaxed text-muted-foreground"
+            style={{ animationDelay: "180ms" }}
+          >
+            WorkSite Manager replaces paperwork, spreadsheets and group-chat chaos with one
+            platform that handles workers, sites, attendance and payments — end to end.
           </p>
         </div>
       </section>
 
-      {/* MISSION */}
-      <section className="w-full bg-transparent py-16 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-            Our Mission
+      <Section className="border-b">
+        <div className="mx-auto max-w-3xl space-y-6 text-center">
+          <Eyebrow>Our mission</Eyebrow>
+          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            Most of construction still runs on pen and paper
           </h2>
-          <p className="text-zinc-300 text-base md:text-lg leading-relaxed">
-            Construction is one of the world&apos;s largest industries, but most of it
-            still runs on pen and paper. Hours of attendance are lost, payments are
-            delayed, and engineers waste afternoons reconciling data instead of
-            running projects. We built WorkSite Manager so a chief engineer, a site
-            engineer, and a worker can all stay on the same page — without ever
-            opening a spreadsheet.
+          <p className="text-lg leading-relaxed text-muted-foreground">
+            Hours of attendance go missing. Payments arrive late. Engineers lose afternoons
+            reconciling numbers instead of running the project. We built WorkSite Manager so a
+            chief engineer, a site engineer and a worker can all stay on the same page without
+            anyone opening a spreadsheet.
           </p>
         </div>
-      </section>
+      </Section>
 
-      {/* WHAT WE BUILD */}
-      <section className="w-full bg-transparent py-16 px-4 sm:px-8 lg:px-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              What We Build
-            </h2>
-            <p className="text-zinc-400 max-w-2xl mx-auto">
-              The four core pieces of the platform — purpose-built for the
-              construction workflow.
-            </p>
-          </div>
+      <Section className="border-b">
+        <SectionHeading
+          eyebrow="What we build"
+          title="Four pieces that cover the job"
+          lead="Purpose-built for the construction workflow, not adapted from generic HR software."
+        />
+        <IconGrid items={offerings} />
+      </Section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {offerings.map((item, i) => (
-              <div
-                key={i}
-                className={`p-6 border rounded-2xl hover:-translate-y-1 transition-all duration-300 ${offeringTints[i % offeringTints.length]}`}
-              >
-                <div className="text-white mb-4">{item.icon}</div>
-                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-zinc-300 text-sm">{item.desc}</p>
-              </div>
-            ))}
+      <Section className="border-b bg-muted/40">
+        <SectionHeading
+          eyebrow="Roles"
+          title="A dashboard for each person on site"
+          lead="Everyone on a site needs something different. Each role is limited to the data it is permitted to see, enforced on the server."
+        />
+        <IconGrid items={roles} />
+      </Section>
+
+      <Section className="border-b">
+        <div className="mx-auto max-w-3xl rounded-xl border bg-card p-8 text-center sm:p-14">
+          <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Sparkles className="h-5 w-5" />
           </div>
+          <h2 className="mb-4 text-2xl font-semibold tracking-tight sm:text-3xl">
+            Ask your data a question
+          </h2>
+          <p className="leading-relaxed text-muted-foreground">
+            Admins and chief engineers can ask in plain English —{" "}
+            <span className="text-foreground">“show me all plumbers at Site Alpha”</span> or{" "}
+            <span className="text-foreground">“workers with a daily rate above 500”</span> — and
+            get an answer straight from live data.
+          </p>
         </div>
-      </section>
+      </Section>
 
-      {/* ROLES */}
-      <section className="w-full bg-transparent py-16 px-4 sm:px-8 lg:px-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Roles We Support
-            </h2>
-            <p className="text-zinc-400 max-w-2xl mx-auto">
-              Every person on a construction site has different needs.
-              We built role-based dashboards for each.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {roles.map((item, i) => (
-              <div
-                key={i}
-                className={`p-6 border rounded-2xl hover:-translate-y-1 transition-all duration-300 ${roleTints[i % roleTints.length]}`}
-              >
-                <div className="text-white mb-4">{item.icon}</div>
-                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-zinc-300 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* AI POWERED */}
-      <section className="w-full bg-transparent py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="border border-white/10 bg-white/5 rounded-2xl p-8 md:p-12 text-center">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-6">
-              <Sparkles className="w-7 h-7 text-white" />
-            </div>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
-              AI-Powered Search
-            </h2>
-            <p className="text-zinc-300 max-w-2xl mx-auto">
-              Admins and chief engineers can ask plain-English questions like
-              <span className="italic"> &quot;show me all plumbers at Site Alpha&quot;</span> or
-              <span className="italic"> &quot;list workers with daily rate above 500&quot;</span>
-              {" "}— and get instant answers from across the entire database.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="w-full bg-transparent py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+      <Section>
+        <div className="mx-auto max-w-2xl space-y-6 text-center">
+          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             Ready to streamline your site?
           </h2>
-          <p className="text-zinc-300">
-            Get started in minutes. No setup fees, no spreadsheets to import.
+          <p className="text-muted-foreground">
+            Get started in minutes. Nothing to import, no spreadsheets to migrate.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
-            <Link href="/register">
-              <Button className="bg-white text-black hover:bg-gray-200 font-semibold px-8 py-6 rounded-xl">
-                Get Started
-              </Button>
-            </Link>
-            <Link href="/login">
-              <Button
-                variant="outline"
-                className="border-white/30 bg-white/5 text-white hover:bg-white/10 px-8 py-6 rounded-xl"
-              >
-                Login
-              </Button>
-            </Link>
+          <div className="flex flex-col justify-center gap-3 pt-2 sm:flex-row">
+            <Button asChild size="lg" className="h-12 px-8">
+              <Link href="/register">
+                Get started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="h-12 px-8">
+              <Link href="/login">Sign in</Link>
+            </Button>
           </div>
         </div>
-      </section>
-    </main>
+      </Section>
+    </>
   );
 }

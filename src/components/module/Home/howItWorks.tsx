@@ -1,58 +1,49 @@
-const cardTints = [
-  "bg-purple-950/40 border-purple-900/40",
-  "bg-emerald-950/40 border-emerald-900/40",
-  "bg-teal-950/40 border-teal-900/40",
+import Reveal from "@/components/shared/reveal";
+import { Section, SectionHeading } from "./section";
+
+const steps = [
+  {
+    title: "Create a site",
+    description:
+      "Add the site, its address, schedule and budget. It takes a minute, and it becomes the single record everything else hangs off.",
+  },
+  {
+    title: "Add your people",
+    description:
+      "Bring in workers and engineers, set daily and half-day rates, and give each person the role they actually need.",
+  },
+  {
+    title: "Mark the day",
+    description:
+      "Your site engineer marks who turned up. Wages are calculated from that attendance and settled through Stripe.",
+  },
 ];
 
 export default function HowItWorks() {
-  const steps = [
-    {
-      id: 1,
-      title: "Create Site",
-      description:
-        "Set up your construction site in minutes and assign basic details.",
-    },
-    {
-      id: 2,
-      title: "Add Workers & Engineers",
-      description:
-        "Add your workforce and assign roles so the system can track everything.",
-    },
-    {
-      id: 3,
-      title: "Track Attendance & Payments",
-      description:
-        "Monitor attendance, work hours, and auto-calculate payments effortlessly.",
-    },
-  ];
-
   return (
-    <section className="w-full bg-transparent py-16 px-4 sm:px-8 lg:px-16">
-      <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">How It Works</h2>
-        <p className="text-zinc-400 mb-12 text-sm sm:text-base">
-          Your workflow simplified into 3 easy steps.
-        </p>
+    <Section id="how-it-works" className="border-b bg-muted/40">
+      <SectionHeading
+        eyebrow="How it works"
+        title="Three steps, then it runs itself"
+        lead="No imports, no migration, no reconciliation at month end."
+      />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {steps.map((step, i) => (
-            <div
-              key={step.id}
-              className={`relative border text-white rounded-2xl p-8 shadow-xl hover:scale-[1.03] transition-all duration-300 ${cardTints[i % cardTints.length]}`}
-            >
-              {/* Step Number */}
-              <div className="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-bold text-xl shadow-md">
-                {step.id}
-              </div>
-
-              <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-              <p className="text-zinc-300 text-sm leading-relaxed">
+      {/* gap-px over a border-coloured background gives hairline dividers between cells */}
+      <div className="grid gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-3">
+        {steps.map((step, index) => (
+          <Reveal key={step.title} delay={index * 90} className="h-full">
+            <div className="group h-full bg-card p-8 transition-colors hover:bg-muted/50">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 font-mono text-sm font-medium text-primary transition-transform duration-200 group-hover:scale-105">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="mt-5 text-lg font-medium">{step.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {step.description}
               </p>
             </div>
-          ))}
-        </div>
+          </Reveal>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

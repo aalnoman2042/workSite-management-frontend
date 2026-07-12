@@ -31,6 +31,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Scroll reveals start at opacity: 0 and are turned on by JS. Without this, a
+            visitor with JavaScript disabled would get a blank page. */}
+        <noscript>
+          <style>{`.reveal { opacity: 1 !important; animation: none !important; }`}</style>
+        </noscript>
         {children}
         <Toaster  position="top-right" richColors></Toaster>
         <Suspense fallback={null}>

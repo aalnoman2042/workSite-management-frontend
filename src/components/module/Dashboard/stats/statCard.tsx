@@ -23,14 +23,19 @@ const StatCard = ({ label, value, icon, hint, tone = "default" }: StatCardProps)
   const Icon = getIconComponent(icon);
 
   return (
-    <Card>
+    <Card className="group transition-shadow duration-200 hover:shadow-md">
       <CardContent className="flex items-start justify-between gap-4 p-5">
         <div className="min-w-0 space-y-1">
           <p className="text-sm font-medium text-muted-foreground">{label}</p>
           <p className="text-2xl font-bold tracking-tight">{value}</p>
           {hint && <p className="truncate text-xs text-muted-foreground">{hint}</p>}
         </div>
-        <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-lg", toneStyles[tone])}>
+        <div
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-105",
+            toneStyles[tone]
+          )}
+        >
           <Icon className="h-5 w-5" />
         </div>
       </CardContent>

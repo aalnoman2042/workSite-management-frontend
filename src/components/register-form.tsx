@@ -1,51 +1,48 @@
-// components/RegisterForm.tsx (Updated with all required and optional fields)
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { registerWorker } from "@/services/auth/registerWorker";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import Link from "next/link"; 
 
-// Helper component for the styled input/label group
-const InputField = ({
+// Built on the shared Input/Label primitives instead of hardcoded gray-300 borders, so the
+// form follows the theme rather than assuming a white page.
+const Field = ({
   id,
   label,
   type = "text",
   placeholder,
   error,
-  required = true, // Added a default required prop
+  required = true,
 }: {
   id: string;
   label: string;
   type?: string;
   placeholder?: string;
-  error: string | null;
-  required?: boolean; // Prop to override required status
+  error?: string | null;
+  required?: boolean;
 }) => (
-  <div className="flex flex-col space-y-1">
-    <label htmlFor={id} className="text-sm font-medium text-gray-700">
-      {label} {required && <span className="text-red-500">*</span>}
-    </label>
-    <input
+  <div className="space-y-2">
+    <Label htmlFor={id}>
+      {label}
+      {required && <span className="ml-0.5 text-destructive">*</span>}
+    </Label>
+    <Input
       id={id}
       name={id}
       type={type}
       placeholder={placeholder}
-      required={required} // Use the prop value
-      className={`w-full border ${
-        error ? "border-red-500 ring-red-500" : "border-gray-300 focus:border-black focus:ring-black"
-      } rounded-lg px-3 py-2 outline-none text-sm transition-all duration-200 focus:ring-2`}
+      required={required}
+      aria-invalid={!!error}
     />
-    {error && (
-      <p className="text-red-600 text-xs mt-1">
-        {error}
-      </p>
-    )}
+    {error && <p className="text-xs text-destructive">{error}</p>}
   </div>
 );
-
 
 const RegisterForm = () => {
   const [state, formAction, isPending] = useActionState(registerWorker, null);
@@ -65,62 +62,66 @@ const RegisterForm = () => {
 
   return (
     <form action={formAction} className="space-y-6">
-      
-      {/* Input Fields Grid (2 columns on medium screens) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-        {/* 1. Full Name (Required) */}
-        <InputField id="name" label="Full Name" placeholder="John Doe" error={getFieldError("name")} />
-
-        {/* 2. NID Number (Required) */}
-        <InputField id="nidNumber" label="NID Number" type="text" placeholder="5656713216" error={getFieldError("nidNumber")} />
-
-        {/* 3. Email (Required) */}
-        <InputField id="email" label="Email" type="email" placeholder="m@example.com" error={getFieldError("email")} />
-
-        {/* 4. Contact Number (Required) */}
-        <InputField id="contactNumber" label="Contact Number" placeholder="017xxxxxxxx" error={getFieldError("contactNumber")} />
-
-        {/* 5. Profile Photo URL (Optional) - Re-added this field */}
-        <InputField 
-            id="profilePhoto" 
-            label="Profile Photo URL" 
-            type="url" 
-            placeholder="https://example.com/photo.jpg" 
-            error={getFieldError("profilePhoto")} 
-            required={false} // Set to optional
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Field id="name" label="Full name" placeholder="John Doe" error={getFieldError("name")} />
+        <Field
+          id="nidNumber"
+          label="NID number"
+          placeholder="5656713216"
+          error={getFieldError("nidNumber")}
         />
-        
-        {/* Empty placeholder to align layout for optional field, or shift passwords */}
-        {/* If you want the passwords to be on the same row, remove this placeholder */}
-        <div className="hidden md:block"></div> 
-
-        {/* 6. Password (Required) */}
-        <InputField id="password" label="Password" type="password" placeholder="Min 6 characters" error={getFieldError("password")} />
-
-        {/* 7. Confirm Password (Required) */}
-        <InputField id="confirmPassword" label="Confirm Password" type="password" placeholder="Re-enter password" error={getFieldError("confirmPassword")} />
-        
+        <Field
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="you@company.com"
+          error={getFieldError("email")}
+        />
+        <Field
+          id="contactNumber"
+          label="Contact number"
+          placeholder="017xxxxxxxx"
+          error={getFieldError("contactNumber")}
+        />
+        <div className="md:col-span-2">
+          <Field
+            id="profilePhoto"
+            label="Profile photo URL"
+            type="url"
+            placeholder="https://example.com/photo.jpg"
+            error={getFieldError("profilePhoto")}
+            required={false}
+          />
+        </div>
+        <Field
+          id="password"
+          label="Password"
+          type="password"
+          placeholder="Min 6 characters"
+          error={getFieldError("password")}
+        />
+        <Field
+          id="confirmPassword"
+          label="Confirm password"
+          type="password"
+          placeholder="Re-enter password"
+          error={getFieldError("confirmPassword")}
+        />
       </div>
 
-      {/* Submit Button and Footer Link */}
-      <div className="space-y-4 pt-2">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full bg-black text-white py-3 rounded-lg font-medium text-base hover:bg-neutral-800 transition-all duration-200 disabled:bg-neutral-400 disabled:cursor-not-allowed shadow-md"
-        >
-          {isPending ? "Creating Account..." : "Create Account"}
-        </button>
+      <div className="space-y-4">
+        <Button type="submit" disabled={isPending} className="h-11 w-full">
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isPending ? "Creating account..." : "Create account"}
+        </Button>
 
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="text-black font-medium hover:underline transition-colors">
+          <Link href="/login" className="text-foreground underline-offset-4 hover:underline">
             Sign in
           </Link>
         </p>
       </div>
-      
     </form>
   );
 };
